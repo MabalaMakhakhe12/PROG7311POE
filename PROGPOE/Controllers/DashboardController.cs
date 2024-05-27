@@ -27,10 +27,23 @@ namespace PROGPOE.Controllers
         public async Task<IActionResult> FarmerDashboard()
         {
             var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
-            var products = await _context.Products.Where(p => p.FarmerID == farmer.FarmerID).Include(p => p.Category).ToListAsync();
+
+            if (farmer == null)
+            {
+                // Handle the case where the farmer is not found
+                TempData["ErrorMessage"] = "Farmer not found.";
+                return RedirectToAction("Index", "Account"); // Redirect to login page or appropriate error page
+            }
+
+            var products = await _context.Products
+                .Where(p => p.FarmerID == farmer.FarmerID)
+                .Include(p => p.Category)
+                .ToListAsync();
+
             ViewBag.Categories = await _context.Categories.ToListAsync();
             return View(products);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(string name, string description, int categoryID, float price, int quantity, DateTime productionDate)

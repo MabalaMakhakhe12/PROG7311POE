@@ -3,6 +3,9 @@ using PROGPOE.Data;
 using PROGPOE.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace AgriEnergyConnect.Controllers
 {
@@ -19,7 +22,6 @@ namespace AgriEnergyConnect.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -35,20 +37,44 @@ namespace AgriEnergyConnect.Controllers
 
             if (user != null)
             {
+                await SignInUser(user.UserName);
                 return RedirectToAction("NormalUserDashboard", "Dashboard");
             }
             else if (farmer != null)
             {
+                await SignInUser(farmer.UserName);
                 return RedirectToAction("FarmerDashboard", "Dashboard");
             }
             else if (employee != null)
             {
+                await SignInUser(employee.UserName);
                 return RedirectToAction("EmployeeDashboard", "Dashboard");
             }
 
             TempData["ErrorMessage"] = "Invalid username or password.";
             return RedirectToAction("Index");
         }
+
+        private async Task SignInUser(string username)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, username)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Register(string username, string password, string role, string name, string surname, string email, string contact, string address, string postcode)
