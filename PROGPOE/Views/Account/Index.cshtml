@@ -1,0 +1,119 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register - Agri-Energy Connect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .form-group select {
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login/Register</h1>
+        <form asp-action="Login" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <hr>
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label for="newUsername">Username:</label>
+                <input type="text" id="newUsername" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Password:</label>
+                <input type="password" id="newPassword" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select id="role" name="role" required>
+                    <option value="NormalUser">Normal User</option>
+                    <option value="Farmer">Farmer</option>
+                    <option value="Employee">Employee</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact:</label>
+                <input type="text" id="contact" name="contact" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="postcode">PostCode:</label>
+                <input type="text" id="postcode" name="postcode">
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+</body>
+</html>
