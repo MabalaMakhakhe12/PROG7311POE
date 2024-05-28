@@ -22,6 +22,7 @@ namespace AgriEnergyConnect.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -38,17 +39,17 @@ namespace AgriEnergyConnect.Controllers
             if (user != null)
             {
                 await SignInUser(user.UserName);
-                return RedirectToAction("NormalUserDashboard", "Dashboard");
+                return RedirectToAction("NormalUserDashboard", "NormalUserDashboard");
             }
             else if (farmer != null)
             {
                 await SignInUser(farmer.UserName);
-                return RedirectToAction("FarmerDashboard", "Dashboard");
+                return RedirectToAction("FarmerDashboard", "FarmerDashboard");
             }
             else if (employee != null)
             {
                 await SignInUser(employee.UserName);
-                return RedirectToAction("EmployeeDashboard", "Dashboard");
+                return RedirectToAction("EmployeeDashboard", "EmployeeDashboard");
             }
 
             TempData["ErrorMessage"] = "Invalid username or password.";
@@ -75,7 +76,6 @@ namespace AgriEnergyConnect.Controllers
                 authProperties);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Register(string username, string password, string role, string name, string surname, string email, string contact, string address, string postcode)
         {
@@ -95,29 +95,6 @@ namespace AgriEnergyConnect.Controllers
                     ImageUrl = "Garbage" // Placeholder
                 };
                 _context.Users.Add(user);
-            }
-            else if (role == "Farmer")
-            {
-                var currentEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Email == User.Identity.Name);
-
-                if (currentEmployee == null)
-                {
-                    TempData["ErrorMessage"] = "Unable to add farmer. Employee not found.";
-                    return RedirectToAction("Index");
-                }
-
-                var farmer = new Farmers
-                {
-                    UserName = username,
-                    Password = password,
-                    Name = name,
-                    Surname = surname,
-                    Email = email,
-                    Contact = contact,
-                    Address = address,
-                    EmployeeID = currentEmployee.EmployeeID
-                };
-                _context.Farmers.Add(farmer);
             }
             else if (role == "Employee")
             {
@@ -139,5 +116,4 @@ namespace AgriEnergyConnect.Controllers
         }
     }
 }
-
 

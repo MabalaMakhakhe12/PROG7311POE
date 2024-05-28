@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace PROGPOE.Controllers
 {
-    public class DashboardController : Controller
+    public class EmployeeDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DashboardController(ApplicationDbContext context)
+        public EmployeeDashboardController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -161,7 +161,52 @@ namespace PROGPOE.Controllers
 
             return View(farmer);
         }
+        [HttpGet]
+        public async Task<IActionResult> EditFarmer(int id)
+        {
+            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.FarmerID == id);
 
+            if (farmer != null)
+            {
+                var viewModel = new EditFarmerViewModel()
+                {
+                    FarmerID = farmer.FarmerID,
+                    UserName = farmer.UserName,
+                    Name = farmer.Name,
+                    Surname = farmer.Surname,
+                    Email = farmer.Email,
+                    Contact = farmer.Contact,
+                    Address = farmer.Address,
+                    Password = farmer.Password,
+                    ConfirmPassword = farmer.Password
+                };
+                return View(viewModel);
+            }
+            TempData["ErrorMessage"] = "Farmer not found.";
+            return RedirectToAction("FarmerProfiles");
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditFarmer(EditFarmerViewModel model)
+        {
+            var farmer = await _context.Farmers.FindAsync(model.FarmerID);
+
+            if (farmer != null)
+            {
+                farmer.UserName = model.UserName;
+                farmer.Name = model.Name;
+                farmer.Surname = model.Surname;
+                farmer.Email = model.Email;
+                farmer.Contact = model.Contact;
+                farmer.Address = model.Address;
+                farmer.Password = model.Password;
+                farmer.ConfirmPassword = model.Password;
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("FarmerProfiles");
+            }
+            return RedirectToAction("FarmerProfiles");
+        }
 
         [HttpPost]
         public async Task<IActionResult> FilterProductsByDate(DateTime? startDate, DateTime? endDate)
