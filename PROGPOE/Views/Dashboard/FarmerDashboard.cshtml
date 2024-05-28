@@ -18,12 +18,7 @@
     </div>
     <div>
         <label>Category:</label>
-        <select name="CategoryID" required>
-            @foreach (var category in ViewBag.Categories)
-            {
-                <option value="@category.CategoryID">@category.Name</option>
-            }
-        </select>
+        <input type="text" name="CategoryName" required />
     </div>
     <div>
         <label>Price:</label>

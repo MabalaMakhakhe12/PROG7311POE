@@ -9,53 +9,59 @@
 <form asp-action="AddFarmer" method="post">
     <div class="form-group">
         <label asp-for="UserName">UserName:</label>
-        <input asp-for="UserName" class="form-control" />
+        <input asp-for="UserName" class="form-control" required />
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Password">Password:</label>
-        <input asp-for="Password" class="form-control" />
+        <input asp-for="Password" class="form-control" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Confirm Password:</label>
+        <input asp-for="ConfirmPassword" class="form-control" required />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Name">Name:</label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Surname">Surname:</label>
-        <input asp-for="Surname" class="form-control" />
+        <input asp-for="Surname" class="form-control" required />
+        <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Email">Email:</label>
-        <input asp-for="Email" class="form-control" />
+        <input asp-for="Email" class="form-control" type="email" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Contact">Contact:</label>
-        <input asp-for="Contact" class="form-control" />
+        <input asp-for="Contact" class="form-control" pattern="\d{10}" title="Please enter a 10-digit number" required />
+        <span asp-validation-for="Contact" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Address">Address:</label>
-        <input asp-for="Address" class="form-control" />
+        <input asp-for="Address" class="form-control" required />
+        <span asp-validation-for="Address" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Add Farmer</button>
 </form>
 
 
-<h3>Filter Products</h3>
-<form asp-action="FilterProducts" method="post">
-    <div>
-        <label>Start Date:</label>
-        <input type="date" name="StartDate" />
+<!-- Filter Products by Date Range Section -->
+<h3>Filter Products by Production Date</h3>
+<form asp-action="FilterProductsByDate" method="post">
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" class="form-control" />
     </div>
-    <div>
-        <label>End Date:</label>
-        <input type="date" name="EndDate" />
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" name="endDate" class="form-control" />
     </div>
-    <div>
-        <label>Category:</label>
-        <input type="text" name="Category" />
-    </div>
-    <div>
-        <input type="submit" value="Filter" />
-    </div>
+    <button type="submit" class="btn btn-primary">Filter Products</button>
 </form>
-
 

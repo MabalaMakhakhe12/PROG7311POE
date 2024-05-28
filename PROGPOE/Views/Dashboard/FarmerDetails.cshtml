@@ -1,0 +1,55 @@
+﻿@model PROGPOE.Models.Farmers
+
+@{
+    ViewData["Title"] = "Farmer Details";
+}
+
+<h2>Farmer Details</h2>
+
+<div>
+    <h4>Farmer Information</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.Name @Model.Surname</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Contact</dt>
+        <dd class="col-sm-10">@Model.Contact</dd>
+
+        <dt class="col-sm-2">Address</dt>
+        <dd class="col-sm-10">@Model.Address</dd>
+    </dl>
+</div>
+
+<h4>Products</h4>
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Production Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Category.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Quantity</td>
+                <td>@product.ProductionDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="FarmerProfiles" class="btn btn-primary">Back to Farmer Profiles</a>

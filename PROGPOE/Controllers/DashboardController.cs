@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PROGPOE.Data;
 using PROGPOE.Models;
@@ -46,7 +47,7 @@ namespace PROGPOE.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(string name, string description, int categoryID, float price, int quantity, DateTime productionDate)
+        public async Task<IActionResult> AddProduct(string name, string description, string categoryName, float price, int quantity, DateTime productionDate)
         {
             var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
             if (farmer == null)
@@ -55,38 +56,65 @@ namespace PROGPOE.Controllers
                 return RedirectToAction("FarmerDashboard");
             }
 
+            // Check if the category already exists, otherwise add it
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
+            if (category == null)
+            {
+                category = new Categories { Name = categoryName };
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
+            }
+
             var product = new Products
             {
                 Name = name,
                 Description = description,
-                CategoryID = categoryID,
+                CategoryID = category.CategoryID,
                 Price = price,
                 Quantity = quantity,
                 ProductionDate = DateOnly.FromDateTime(productionDate),
-                FarmerID = farmer.FarmerID // Assign the FarmerID of the logged-in farmer
+                FarmerID = farmer.FarmerID
             };
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("FarmerDashboard");
         }
 
+        //[Authorize(Roles = "Employee")]
         public async Task<IActionResult> EmployeeDashboard()
         {
-            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
+            var currentEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
 
-            /*  var viewModel = new EmployeeDashboardViewModel
-              {
-                  FilteredProducts = await _context.Products.Include(p => p.Farmer).Include(p => p.Category).ToListAsync()
-              };*/
-              return View(farmer);
+            if (currentEmployee == null)
+            {
+                //   TempData["ErrorMessage"] = "Employee not found.";
+                return RedirectToAction("Index", "Account"); // Redirect to login page or appropriate error page
+            }
+
+            var farmer = new Farmers();
+            return View(farmer);
         }
 
 
+
         [HttpPost]
-        public async Task<IActionResult> AddFarmer(string username, string password, string role, string name, string surname, string email, string contact, string address, string postcode)
+        public async Task<IActionResult> AddFarmer(string username, string password, string confirmPassword, string role, string name, string surname, string email, string contact, string address, string postcode)
         {
             var currentEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+
+            if (password != confirmPassword)
+            {
+                ModelState.AddModelError("ConfirmPassword", "The password and confirmation password do not match.");
+                return RedirectToAction("EmployeeDashboard");
+            }
+            // Ensure currentEmployee is found
+            if (currentEmployee == null)
+            {
+                TempData["ErrorMessage"] = "Employee not found.";
+                return RedirectToAction("Index", "Account"); // Redirect to login page or appropriate error page
+            }
 
             var farmer = new Farmers
             {
@@ -97,7 +125,8 @@ namespace PROGPOE.Controllers
                 Contact = contact,
                 Address = address,
                 Password = password,
-                EmployeeID = 3
+                ConfirmPassword = password,
+                EmployeeID = currentEmployee.EmployeeID // Assign EmployeeID of the current employee
 
             };
             _context.Farmers.Add(farmer);
@@ -107,36 +136,50 @@ namespace PROGPOE.Controllers
             return RedirectToAction("EmployeeDashboard");
 
         }
+        public async Task<IActionResult> FarmerProfiles()
+        {
+            var farmers = await _context.Farmers
+                                    .Include(f => f.Employees)
+                                    .Where(f => f.EmployeeID != null) // Filter out farmers without associated employees
+                                    .ToListAsync();
+            return View(farmers);
+        }
+
+
+        public async Task<IActionResult> FarmerDetails(int id)
+        {
+            var farmer = await _context.Farmers
+                .Include(f => f.Products)
+                .ThenInclude(p => p.Category)
+                .FirstOrDefaultAsync(f => f.FarmerID == id);
+
+            if (farmer == null)
+            {
+                TempData["ErrorMessage"] = "Farmer not found.";
+                return RedirectToAction("FarmerProfiles");
+            }
+
+            return View(farmer);
+        }
 
 
         [HttpPost]
-        public async Task<IActionResult> FilterProducts(DateTime? startDate, DateTime? endDate, string category)
+        public async Task<IActionResult> FilterProductsByDate(DateTime? startDate, DateTime? endDate)
         {
-            var query = _context.Products.Include(p => p.Farmer).Include(p => p.Category).AsQueryable();
-
-            if (startDate.HasValue)
+            if (!startDate.HasValue || !endDate.HasValue)
             {
-                query = query.Where(p => p.ProductionDate >= DateOnly.FromDateTime(startDate.Value));
+                TempData["ErrorMessage"] = "Please enter both start and end dates.";
+                return RedirectToAction("EmployeeDashboard");
             }
 
-            if (endDate.HasValue)
-            {
-                query = query.Where(p => p.ProductionDate <= DateOnly.FromDateTime(endDate.Value));
-            }
+            var products = await _context.Products
+                .Where(p => p.ProductionDate >= DateOnly.FromDateTime(startDate.Value) &&
+                            p.ProductionDate <= DateOnly.FromDateTime(endDate.Value))
+                .Include(p => p.Farmer)
+                .Include(p => p.Category)
+                .ToListAsync();
 
-            if (!string.IsNullOrEmpty(category))
-            {
-                query = query.Where(p => p.Category.Name.Contains(category));
-            }
-
-            var products = await query.ToListAsync();
-
-            var viewModel = new EmployeeDashboardViewModel
-            {
-                FilteredProducts = products
-            };
-
-            return View("EmployeeDashboard", viewModel);
+            return View("FilteredProducts", products);
         }
     }
 }

@@ -1,33 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<PROGPOE.Models.Products>
+
 @{
+    Layout = "_Layout";
 }
-<h3>Filtered Products</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Production Date</th>
-            <th>Farmer</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model.FilteredProducts)
-        {
+
+<h2>Filtered Products</h2>
+
+@if (!Model.Any())
+{
+    <p>No products found for the specified date range.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@product.Name</td>
-                <td>@product.Description</td>
-                <td>@product.Category.Name</td>
-                <td>@product.Price</td>
-                <td>@product.Quantity</td>
-                <td>@product.ProductionDate.ToString("yyyy-MM-dd")</td>
-                <td>@product.Farmer.Name</td>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Production Date</th>
+                <th>Farmer</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Category.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.ProductionDate.ToString("yyyy-MM-dd")</td>
+                    <td>@product.Farmer.Name @product.Farmer.Surname</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

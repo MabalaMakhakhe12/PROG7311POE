@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PROGPOE.Data;
 
@@ -11,9 +12,11 @@ using PROGPOE.Data;
 namespace PROGPOE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class FarmerProductContextModelSnapshot : ModelSnapshot
+    [Migration("20240528101457_20th")]
+    partial class _20th
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
