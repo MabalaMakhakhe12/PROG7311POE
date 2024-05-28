@@ -41,5 +41,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapControllerRoute(
+    name: "edit_farmer",
+    pattern: "Dashboard/EditFarmer/{id}",
+    defaults: new { controller = "Dashboard", action = "EditFarmer" });
 app.Run();
