@@ -1,4 +1,4 @@
-﻿@model PROGPOE.Models.Farmers
+﻿@model PROGPOE.Models.EditFarmerViewModel
 
 @{
     ViewData["Title"] = "Edit Farmer";
@@ -7,7 +7,12 @@
 <h2>Edit Farmer</h2>
 
 <form asp-action="EditFarmer" method="post">
-    <input type="hidden" asp-for="FarmerID" />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <label asp-for="FarmerID">FarmerID:</label>
+        <input asp-for="FarmerID" readonly class="form-control" />
+        <span asp-validation-for="FarmerID" class="text-danger"></span>
+    </div>
     <div class="form-group">
         <label asp-for="UserName">UserName:</label>
         <input asp-for="UserName" class="form-control" />

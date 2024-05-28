@@ -29,6 +29,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
+            <th>FarmerID</th>
             <th>Product Name</th>
             <th>Description</th>
             <th>Category</th>
@@ -41,6 +42,7 @@
         @foreach (var product in Model.Products)
         {
             <tr>
+                <td>@product.FarmerID</td>
                 <td>@product.Name</td>
                 <td>@product.Description</td>
                 <td>@product.Category.Name</td>
