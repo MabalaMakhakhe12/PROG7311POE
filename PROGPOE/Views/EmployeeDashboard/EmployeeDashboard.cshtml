@@ -4,52 +4,113 @@
     Layout = "_Layout";
 }
 
-<h2>Add New Farmer</h2>
-
-<form id="addFarmerForm" asp-action="AddFarmer" method="post">
-    <div class="form-group">
-        <label asp-for="UserName">UserName:</label>
-        <input asp-for="UserName" class="form-control" required />
-        <span asp-validation-for="UserName" class="text-danger"></span>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2">
+            <nav class="sidebar">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="@Url.Action("EmployeeDashboard", "EmployeeDashboard")">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("AddFarmer", "EmployeeDashboard")">
+                            <i class="fas fa-user-plus"></i> Add a Farmer
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("FarmerProfiles", "EmployeeDashboard")">
+                            <i class="fas fa-users"></i> Farmer Profiles
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Products", "EmployeeDashboard")">
+                            <i class="fas fa-box"></i> Products
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("FilterProductsByDate", "EmployeeDashboard")">
+                            <i class="fas fa-filter"></i> Filter Products
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("TotalOrders", "EmployeeDashboard")">
+                            <i class="fas fa-receipt"></i> Total Orders
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-10">
+            <h2 class="mt-4 mb-4">Dashboard</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Add a Farmer</h5>
+                            <p class="card-text">8</p>
+                            <a href="@Url.Action("AddFarmer", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Farmer Profiles</h5>
+                            <p class="card-text">14</p>
+                            <a href="@Url.Action("FarmerProfiles", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Products</h5>
+                            <p class="card-text">31</p>
+                            <a href="@Url.Action("NormalUserDashboard", "NormalUserDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Filter Products</h5>
+                            <a href="@Url.Action("FilterProductsByDate", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Categories</h5>
+                            <p class="card-text">22</p>
+                            <a href="@Url.Action("Categories", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Orders</h5>
+                            <p class="card-text">₹6100</p>
+                            <a href="@Url.Action("TotalOrders", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card bg-light text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Account</h5>
+                            <p class="card-text">3</p>
+                            <a href="@Url.Action("Account", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Password">Password:</label>
-        <input asp-for="Password" id="password" class="form-control" required />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword">Confirm Password:</label>
-        <input asp-for="ConfirmPassword" id="confirmPassword" class="form-control" required />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-        <span id="confirmPasswordError" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Name">Name:</label>
-        <input asp-for="Name" class="form-control" required />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Surname">Surname:</label>
-        <input asp-for="Surname" class="form-control" required />
-        <span asp-validation-for="Surname" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email">Email:</label>
-        <input asp-for="Email" class="form-control" type="email" required />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Contact">Contact:</label>
-        <input asp-for="Contact" class="form-control" pattern="\d{10}" title="Please enter a 10-digit number" required />
-        <span asp-validation-for="Contact" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Address">Address:</label>
-        <input asp-for="Address" class="form-control" required />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <button id="addFarmerButton" type="submit" class="btn btn-primary" disabled>Add Farmer</button>
-</form>
+</div>
 
 @section Scripts {
     <script>
@@ -69,16 +130,4 @@
             }
         });
     </script>
-}<!-- Filter Products by Date Range Section -->
-<h3>Filter Products by Production Date</h3>
-<form asp-action="FilterProductsByDate" method="post">
-    <div class="form-group">
-        <label for="startDate">Start Date:</label>
-        <input type="date" name="startDate" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="endDate">End Date:</label>
-        <input type="date" name="endDate" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Filter Products</button>
-</form>
+}

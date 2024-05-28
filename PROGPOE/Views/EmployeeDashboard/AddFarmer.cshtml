@@ -1,0 +1,84 @@
+﻿@model PROGPOE.Models.Farmers
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Add New Farmer</h2>
+
+<form id="addFarmerForm" asp-action="AddFarmer" method="post">
+    <div class="form-group">
+        <label asp-for="UserName">UserName:</label>
+        <input asp-for="UserName" class="form-control" required />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password" id="password" class="form-control" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Confirm Password:</label>
+        <input asp-for="ConfirmPassword" id="confirmPassword" class="form-control" required />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <span id="confirmPasswordError" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name">Name:</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Surname">Surname:</label>
+        <input asp-for="Surname" class="form-control" required />
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" class="form-control" type="email" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Contact">Contact:</label>
+        <input asp-for="Contact" class="form-control" pattern="\d{10}" title="Please enter a 10-digit number" required />
+        <span asp-validation-for="Contact" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address">Address:</label>
+        <input asp-for="Address" class="form-control" required />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <button id="addFarmerButton" type="submit" class="btn btn-primary" disabled>Add Farmer</button>
+</form>
+
+@section Scripts {
+    <script>
+        // Custom validation script
+        document.getElementById("confirmPassword").addEventListener("keyup", function () {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var confirmPasswordError = document.getElementById("confirmPasswordError");
+            var addFarmerButton = document.getElementById("addFarmerButton");
+
+            if (password !== confirmPassword) {
+                confirmPasswordError.innerText = "The password and confirm password do not match.";
+                addFarmerButton.disabled = true;
+            } else {
+                confirmPasswordError.innerText = "";
+                addFarmerButton.disabled = false;
+            }
+        });
+    </script>
+}<!-- Filter Products by Date Range Section -->
+<h3>Filter Products by Production Date</h3>
+<form asp-action="FilterProductsByDate" method="post">
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" name="endDate" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Filter Products</button>
+</form>

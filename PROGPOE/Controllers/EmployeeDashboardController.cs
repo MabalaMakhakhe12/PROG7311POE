@@ -19,69 +19,6 @@ namespace PROGPOE.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> NormalUserDashboard()
-        {
-            var products = await _context.Products.Include(p => p.Farmer).Include(p => p.Category).ToListAsync();
-            return View(products);
-        }
-
-        public async Task<IActionResult> FarmerDashboard()
-        {
-            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
-
-            if (farmer == null)
-            {
-                // Handle the case where the farmer is not found
-                TempData["ErrorMessage"] = "Farmer not found.";
-                return RedirectToAction("Index", "Account"); // Redirect to login page or appropriate error page
-            }
-
-            var products = await _context.Products
-                .Where(p => p.FarmerID == farmer.FarmerID)
-                .Include(p => p.Category)
-                .ToListAsync();
-
-            ViewBag.Categories = await _context.Categories.ToListAsync();
-            return View(products);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddProduct(string name, string description, string categoryName, float price, int quantity, DateTime productionDate)
-        {
-            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
-            if (farmer == null)
-            {
-                TempData["ErrorMessage"] = "Farmer not found.";
-                return RedirectToAction("FarmerDashboard");
-            }
-
-            // Check if the category already exists, otherwise add it
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
-            if (category == null)
-            {
-                category = new Categories { Name = categoryName };
-                _context.Categories.Add(category);
-                await _context.SaveChangesAsync();
-            }
-
-            var product = new Products
-            {
-                Name = name,
-                Description = description,
-                CategoryID = category.CategoryID,
-                Price = price,
-                Quantity = quantity,
-                ProductionDate = DateOnly.FromDateTime(productionDate),
-                FarmerID = farmer.FarmerID
-            };
-
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("FarmerDashboard");
-        }
-
         //[Authorize(Roles = "Employee")]
         public async Task<IActionResult> EmployeeDashboard()
         {
@@ -205,6 +142,21 @@ namespace PROGPOE.Controllers
 
                 return RedirectToAction("FarmerProfiles");
             }
+            return RedirectToAction("FarmerProfiles");
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteFarmer(EditFarmerViewModel model)
+        {
+            var farmer = await _context.Farmers.FindAsync(model.FarmerID);
+
+            if (farmer != null)
+            {
+                _context.Farmers.Remove(farmer);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("FarmerProfiles");
+
+            }
+
             return RedirectToAction("FarmerProfiles");
         }
 

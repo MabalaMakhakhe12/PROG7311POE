@@ -66,6 +66,10 @@
                     <td>@product.Price.ToString("C")</td>
                     <td>@product.Quantity</td>
                     <td>@product.ProductionDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a asp-action="Product Details" asp-route-id="@product.ProductID" class="btn btn-info">View Products</a>
+                        <a asp-action="EditProduct" asp-route-id="@product.ProductID" class="btn btn-warning">Edit</a>
+                    </td>
                 </tr>
             }
         </tbody>

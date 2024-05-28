@@ -73,5 +73,54 @@ namespace PROGPOE.Controllers
 
             return RedirectToAction("FarmerDashboard");
         }
+        [HttpGet]
+        public async Task<IActionResult> EditProduct(int id)
+        {
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.ProductID == id);
+
+            if (product != null)
+            {
+                var viewModel = new EditProductsViewModel()
+                {
+                    ProductID = product.ProductID,
+                    Name = product.Name,
+                    Description = product.Description,
+                    CategoryID = product.CategoryID,
+                    Price = product.Price,
+                    Quantity = product.Quantity,
+                    ProductionDate = product.ProductionDate
+                };
+
+                ViewBag.Categories = await _context.Categories.ToListAsync();
+                return View(viewModel);
+            }
+
+            TempData["ErrorMessage"] = "Product not found.";
+            return RedirectToAction("FarmerDashboard");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(EditProductsViewModel model)
+        {
+            var product = await _context.Products.FindAsync(model.ProductID);
+
+            if (product != null)
+            {
+                product.Name = model.Name;
+                product.Description = model.Description;
+                product.CategoryID = model.CategoryID;
+                product.Price = model.Price;
+                product.Quantity = model.Quantity;
+                product.ProductionDate = model.ProductionDate;
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("FarmerDashboard");
+            }
+            return RedirectToAction("FarmerDashboard"); 
+        }
+        }
     }
-}
