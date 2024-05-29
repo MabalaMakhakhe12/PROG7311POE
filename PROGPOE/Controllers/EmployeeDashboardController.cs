@@ -10,76 +10,13 @@ using System.Threading.Tasks;
 
 namespace PROGPOE.Controllers
 {
-    public class DashboardController : Controller
+    public class EmployeeDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DashboardController(ApplicationDbContext context)
+        public EmployeeDashboardController(ApplicationDbContext context)
         {
             _context = context;
-        }
-
-        public async Task<IActionResult> NormalUserDashboard()
-        {
-            var products = await _context.Products.Include(p => p.Farmer).Include(p => p.Category).ToListAsync();
-            return View(products);
-        }
-
-        public async Task<IActionResult> FarmerDashboard()
-        {
-            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
-
-            if (farmer == null)
-            {
-                // Handle the case where the farmer is not found
-                TempData["ErrorMessage"] = "Farmer not found.";
-                return RedirectToAction("Index", "Account"); // Redirect to login page or appropriate error page
-            }
-
-            var products = await _context.Products
-                .Where(p => p.FarmerID == farmer.FarmerID)
-                .Include(p => p.Category)
-                .ToListAsync();
-
-            ViewBag.Categories = await _context.Categories.ToListAsync();
-            return View(products);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddProduct(string name, string description, string categoryName, float price, int quantity, DateTime productionDate)
-        {
-            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
-            if (farmer == null)
-            {
-                TempData["ErrorMessage"] = "Farmer not found.";
-                return RedirectToAction("FarmerDashboard");
-            }
-
-            // Check if the category already exists, otherwise add it
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
-            if (category == null)
-            {
-                category = new Categories { Name = categoryName };
-                _context.Categories.Add(category);
-                await _context.SaveChangesAsync();
-            }
-
-            var product = new Products
-            {
-                Name = name,
-                Description = description,
-                CategoryID = category.CategoryID,
-                Price = price,
-                Quantity = quantity,
-                ProductionDate = DateOnly.FromDateTime(productionDate),
-                FarmerID = farmer.FarmerID
-            };
-
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("FarmerDashboard");
         }
 
         //[Authorize(Roles = "Employee")]
@@ -97,7 +34,11 @@ namespace PROGPOE.Controllers
             return View(farmer);
         }
 
-
+        [HttpGet]
+        public IActionResult AddFarmer()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddFarmer(string username, string password, string confirmPassword, string role, string name, string surname, string email, string contact, string address, string postcode)
@@ -161,7 +102,67 @@ namespace PROGPOE.Controllers
 
             return View(farmer);
         }
+        [HttpGet]
+        public async Task<IActionResult> EditFarmer(int id)
+        {
+            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.FarmerID == id);
 
+            if (farmer != null)
+            {
+                var viewModel = new EditFarmerViewModel()
+                {
+                    FarmerID = farmer.FarmerID,
+                    UserName = farmer.UserName,
+                    Name = farmer.Name,
+                    Surname = farmer.Surname,
+                    Email = farmer.Email,
+                    Contact = farmer.Contact,
+                    Address = farmer.Address,
+                    Password = farmer.Password,
+                    ConfirmPassword = farmer.Password
+                };
+                return View(viewModel);
+            }
+            TempData["ErrorMessage"] = "Farmer not found.";
+            return RedirectToAction("FarmerProfiles");
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditFarmer(EditFarmerViewModel model)
+        {
+            var farmer = await _context.Farmers.FindAsync(model.FarmerID);
+
+            if (farmer != null)
+            {
+                farmer.UserName = model.UserName;
+                farmer.Name = model.Name;
+                farmer.Surname = model.Surname;
+                farmer.Email = model.Email;
+                farmer.Contact = model.Contact;
+                farmer.Address = model.Address;
+                farmer.Password = model.Password;
+                farmer.ConfirmPassword = model.Password;
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("FarmerProfiles");
+            }
+            return RedirectToAction("FarmerProfiles");
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteFarmer(EditFarmerViewModel model)
+        {
+            var farmer = await _context.Farmers.FindAsync(model.FarmerID);
+
+            if (farmer != null)
+            {
+                _context.Farmers.Remove(farmer);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("FarmerProfiles");
+
+            }
+
+            return RedirectToAction("FarmerProfiles");
+        }
 
         [HttpPost]
         public async Task<IActionResult> FilterProductsByDate(DateTime? startDate, DateTime? endDate)

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PROGPOE.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -23,16 +24,16 @@
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="NormalUserDashboard">Products</a>
+                            <a class="nav-link text-dark" asp-controller="NormalUserDashboard" asp-action="NormalUserDashboard">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="FarmerDashboard">Farmer Dashboard</a>
+                            <a class="nav-link text-dark" asp-controller="FarmerDashboard" asp-action="FarmerDashboard">Farmer Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="EmployeeDashboard">Employee Dashboard</a>
+                            <a class="nav-link text-dark" asp-controller="EmployeeDashboard" asp-action="EmployeeDashboard">Employee Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="FarmerProfiles">Farmer Profiles</a>
+                            <a class="nav-link text-dark" asp-controller="EmployeeDashboard" asp-action="FarmerProfiles">Farmer Profiles</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -59,4 +60,5 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
 
