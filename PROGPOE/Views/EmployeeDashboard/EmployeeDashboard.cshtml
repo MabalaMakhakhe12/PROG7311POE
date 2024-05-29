@@ -110,7 +110,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Add a Farmer</h5>
                             <p class="card-text">8</p>
-                            <a href="@Url.Action("AddFarmer", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
+                            <a href="@Url.Action("AddFarmer", "EmployeeDashboard")" class="btn btn-primary">Add a Farmer</a>
                         </div>
                     </div>
                 </div>
@@ -172,22 +172,4 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        // Custom validation script
-        document.getElementById("confirmPassword").addEventListener("keyup", function () {
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirmPassword").value;
-            var confirmPasswordError = document.getElementById("confirmPasswordError");
-            var addFarmerButton = document.getElementById("addFarmerButton");
 
-            if (password !== confirmPassword) {
-                confirmPasswordError.innerText = "The password and confirm password do not match.";
-                addFarmerButton.disabled = true;
-            } else {
-                confirmPasswordError.innerText = "";
-                addFarmerButton.disabled = false;
-            }
-        });
-    </script>
-}

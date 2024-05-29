@@ -34,7 +34,11 @@ namespace PROGPOE.Controllers
             return View(farmer);
         }
 
-
+        [HttpGet]
+        public IActionResult AddFarmer()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddFarmer(string username, string password, string confirmPassword, string role, string name, string surname, string email, string contact, string address, string postcode)

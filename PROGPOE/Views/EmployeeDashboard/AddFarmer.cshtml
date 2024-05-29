@@ -6,8 +6,8 @@
 
 <h2>Add New Farmer</h2>
 
-<form id="addFarmerForm" asp-action="AddFarmer" method="post">
-<div class="form-group">
+<form asp-action="AddFarmer" method="post">
+    <div class="form-group">
         <label asp-for="UserName">UserName:</label>
         <input asp-for="UserName" class="form-control" required />
         <span asp-validation-for="UserName" class="text-danger"></span>
@@ -69,7 +69,8 @@
             }
         });
     </script>
-}<!-- Filter Products by Date Range Section -->
+}
+<!-- Filter Products by Date Range Section -->
 <h3>Filter Products by Production Date</h3>
 <form asp-action="FilterProductsByDate" method="post">
     <div class="form-group">
