@@ -33,10 +33,14 @@ namespace PROGPOE.Controllers
                 .Include(p => p.Category)
                 .ToListAsync();
 
-            ViewBag.Categories = await _context.Categories.ToListAsync();
+          //  ViewBag.Categories = await _context.Categories.ToListAsync();
             return View(products);
         }
-
+        [HttpGet]
+        public IActionResult AddProduct()
+        {
+           return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(string name, string description, string categoryName, float price, int quantity, DateTime productionDate)
@@ -122,5 +126,40 @@ namespace PROGPOE.Controllers
             }
             return RedirectToAction("FarmerDashboard"); 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("FarmerDashboard");
         }
+
+        
+
+        [HttpGet]
+        public async Task<IActionResult> ProductList()
+        {
+            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
+
+            if (farmer == null)
+            {
+                TempData["ErrorMessage"] = "Farmer not found.";
+                return RedirectToAction("Index", "Account");
+            }
+
+            var products = await _context.Products
+                .Where(p => p.FarmerID == farmer.FarmerID)
+                .Include(p => p.Category)
+                .ToListAsync();
+
+            return View(products);
+        }
+    }
     }
