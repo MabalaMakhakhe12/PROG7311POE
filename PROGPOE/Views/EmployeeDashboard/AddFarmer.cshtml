@@ -70,16 +70,3 @@
         });
     </script>
 }
-<!-- Filter Products by Date Range Section -->
-<h3>Filter Products by Production Date</h3>
-<form asp-action="FilterProductsByDate" method="post">
-    <div class="form-group">
-        <label for="startDate">Start Date:</label>
-        <input type="date" name="startDate" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="endDate">End Date:</label>
-        <input type="date" name="endDate" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Filter Products</button>
-</form>

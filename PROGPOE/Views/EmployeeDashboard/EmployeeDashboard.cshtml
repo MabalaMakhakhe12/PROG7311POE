@@ -14,24 +14,27 @@
         .sidebar {
             background-color: #343a40;
             padding: 15px;
+            width: 220px;
             height: 100vh;
             position: fixed;
+            left: 0;
         }
 
-        .sidebar a {
-            color: #ffffff;
-            display: block;
-            padding: 10px 15px;
-            text-decoration: none;
-        }
+            .sidebar a {
+                color: #ffffff;
+                display: block;
+                padding: 10px 15px;
+                text-decoration: none;
+            }
 
-        .sidebar a:hover {
-            background-color: #495057;
-            border-radius: 5px;
-        }
+                .sidebar a:hover {
+                    background-color: #495057;
+                    border-radius: 5px;
+                }
 
-        .container-fluid {
-            margin-left: 220px; /* Space for sidebar */
+        .main-content {
+            margin-left: 240px; /* Space for sidebar */
+            padding: 15px;
         }
 
         .card {
@@ -53,9 +56,9 @@
             transition: background 0.3s;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(to right, #0056b3, #004085);
-        }
+            .btn-primary:hover {
+                background: linear-gradient(to right, #0056b3, #004085);
+            }
 
         .mt-4, .mb-4 {
             margin-top: 1.5rem !important;
@@ -64,112 +67,105 @@
     </style>
 }
 
-<div class="container-fluid">
+<div class="sidebar">
+    <ul class="list-unstyled">
+        <li>
+            <a href="@Url.Action("EmployeeDashboard", "EmployeeDashboard")">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("AddFarmer", "EmployeeDashboard")">
+                <i class="fas fa-user-plus"></i> Add a Farmer
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("FarmerProfiles", "EmployeeDashboard")">
+                <i class="fas fa-users"></i> Farmer Profiles
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("NormalUserDashboard", "NormalUserDashboard")">
+                <i class="fas fa-box"></i> Products
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("FilterProductsByDate", "EmployeeDashboard")">
+                <i class="fas fa-filter"></i> Filter Products
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("TotalOrders", "EmployeeDashboard")">
+                <i class="fas fa-receipt"></i> Total Orders
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <h2 class="mt-4 mb-4">Dashboard</h2>
     <div class="row">
-        <div class="col-lg-2">
-            <nav class="sidebar">
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="@Url.Action("EmployeeDashboard", "EmployeeDashboard")">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("AddFarmer", "EmployeeDashboard")">
-                            <i class="fas fa-user-plus"></i> Add a Farmer
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("FarmerProfiles", "EmployeeDashboard")">
-                            <i class="fas fa-users"></i> Farmer Profiles
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("NormalUserDashboard", "NormalUserDashboard")">
-                            <i class="fas fa-box"></i> Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("FilterProductsByDate", "EmployeeDashboard")">
-                            <i class="fas fa-filter"></i> Filter Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("TotalOrders", "EmployeeDashboard")">
-                            <i class="fas fa-receipt"></i> Total Orders
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Farmer</h5>
+                    <p class="card-text">8</p>
+                    <a href="@Url.Action("AddFarmer", "EmployeeDashboard")" class="btn btn-primary">Add a Farmer</a>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-10">
-            <h2 class="mt-4 mb-4">Dashboard</h2>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Add a Farmer</h5>
-                            <p class="card-text">8</p>
-                            <a href="@Url.Action("AddFarmer", "EmployeeDashboard")" class="btn btn-primary">Add a Farmer</a>
-                        </div>
-                    </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Farmer Profiles</h5>
+                    <p class="card-text">14</p>
+                    <a href="@Url.Action("FarmerProfiles", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Farmer Profiles</h5>
-                            <p class="card-text">14</p>
-                            <a href="@Url.Action("FarmerProfiles", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Products</h5>
+                    <p class="card-text">31</p>
+                    <a href="@Url.Action("NormalUserDashboard", "NormalUserDashboard")" class="btn btn-primary">View Details</a>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Products</h5>
-                            <p class="card-text">31</p>
-                            <a href="@Url.Action("NormalUserDashboard", "NormalUserDashboard")" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Filter Products</h5>
+                    <a href="@Url.Action("FilterProductsByDate", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Filter Products</h5>
-                            <a href="@Url.Action("FilterProductsByDate", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Categories</h5>
+                    <p class="card-text">22</p>
+                    <a href="@Url.Action("Categories", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Categories</h5>
-                            <p class="card-text">22</p>
-                            <a href="@Url.Action("Categories", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orders</h5>
+                    <p class="card-text">₹6100</p>
+                    <a href="@Url.Action("TotalOrders", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Orders</h5>
-                            <p class="card-text">₹6100</p>
-                            <a href="@Url.Action("TotalOrders", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Account</h5>
-                            <p class="card-text">3</p>
-                            <a href="@Url.Action("Account", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Account</h5>
+                    <p class="card-text">3</p>
+                    <a href="@Url.Action("Account", "EmployeeDashboard")" class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-

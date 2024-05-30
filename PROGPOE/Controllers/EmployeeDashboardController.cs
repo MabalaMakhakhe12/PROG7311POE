@@ -164,6 +164,13 @@ namespace PROGPOE.Controllers
             return RedirectToAction("FarmerProfiles");
         }
 
+
+        [HttpGet]
+        public IActionResult FilterProductsByDate()
+        {
+            return View("FilterProductsByDate");
+        }
+
         [HttpPost]
         public async Task<IActionResult> FilterProductsByDate(DateTime? startDate, DateTime? endDate)
         {
