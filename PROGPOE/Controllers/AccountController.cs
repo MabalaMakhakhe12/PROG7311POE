@@ -18,7 +18,7 @@ namespace AgriEnergyConnect.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }
@@ -29,7 +29,7 @@ namespace AgriEnergyConnect.Controllers
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 TempData["ErrorMessage"] = "Username and password are required.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Login");
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username && u.Password == password);
@@ -53,7 +53,7 @@ namespace AgriEnergyConnect.Controllers
             }
 
             TempData["ErrorMessage"] = "Invalid username or password.";
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
 
         private async Task SignInUser(string username)
@@ -75,10 +75,23 @@ namespace AgriEnergyConnect.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(string username, string password, string role, string name, string surname, string email, string contact, string address, string postcode)
+        public IActionResult Register()
         {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(string username, string password, string confirmPassword, string role, string name, string surname, string email, string contact, string address, string postcode)
+        {
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var existingFarmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == username);
+            var existingEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == username);
+
+            if (existingUser != null || existingFarmer != null || existingEmployee != null)
+            {
+                TempData["ErrorMessage"] = "Username already exists.";
+                return RedirectToAction("Register");
+            }
+
             if (role == "NormalUser")
             {
                 var user = new Users
@@ -106,13 +119,14 @@ namespace AgriEnergyConnect.Controllers
                     Email = email,
                     mobile = contact,
                     Address = address,
-                    Password = password
+                    Password = password,
+                    ConfirmPassword = password
                 };
                 _context.Employees.Add(employee);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
     }
 }

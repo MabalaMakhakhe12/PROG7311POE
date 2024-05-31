@@ -5,7 +5,12 @@
 }
 
 <h2>Edit Farmer</h2>
-
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <form asp-action="EditFarmer" method="post">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">

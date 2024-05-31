@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer("Server=localhost\\MSSQLSERVER01;Database=master;Trusted_Connection=True;TrustServerCertificate=True;");
+    options.UseSqlServer("Server=tcp:st10150497.database.windows.net,1433;Initial Catalog=myFreeDB;Persist Security Info=True;User ID=st10150497;Password=Eastsure54@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
 });
 
 // Add authentication services

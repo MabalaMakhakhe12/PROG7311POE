@@ -24,7 +24,7 @@ namespace PROGPOE.Controllers
         }
         public IActionResult LoginRegister()
         {
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Login", "Account");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

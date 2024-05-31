@@ -69,7 +69,7 @@ namespace PROGPOE.Controllers
                 Price = price,
                 Quantity = quantity,
                 ProductionDate = DateOnly.FromDateTime(productionDate),
-                FarmerID = farmer.FarmerID
+                FarmerID = farmer.FarmerID,
             };
 
             _context.Products.Add(product);
