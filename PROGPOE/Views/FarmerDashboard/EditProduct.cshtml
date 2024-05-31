@@ -5,7 +5,12 @@
 }
 
 <h2 class="mt-4 mb-4">Edit Product</h2>
-
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <div class="card mb-4">
     <div class="card-header">
         <h3>Edit Product</h3>

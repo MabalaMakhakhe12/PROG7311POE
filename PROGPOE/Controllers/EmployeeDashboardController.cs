@@ -27,7 +27,7 @@ namespace PROGPOE.Controllers
             if (currentEmployee == null)
             {
                 //   TempData["ErrorMessage"] = "Employee not found.";
-                return RedirectToAction("Index", "Account"); // Redirect to login page or appropriate error page
+                return RedirectToAction("Login", "Account"); // Redirect to login page or appropriate error page
             }
 
             var farmer = new Farmers();
@@ -45,6 +45,13 @@ namespace PROGPOE.Controllers
         {
             var currentEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
 
+            var existingFarmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == username);
+
+            if (existingFarmer != null)
+            {
+                TempData["ErrorMessage"] = "Username already exists.";
+                return View("AddFarmer");
+            }
             if (password != confirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "The password and confirmation password do not match.");
@@ -164,6 +171,11 @@ namespace PROGPOE.Controllers
             return RedirectToAction("FarmerProfiles");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> FilterProductsByDate()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> FilterProductsByDate(DateTime? startDate, DateTime? endDate)
         {

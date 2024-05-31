@@ -1,4 +1,25 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    // Initialize Select2
+    $('.select2').select2();
 
-// Write your JavaScript code.
+    // Initialize Bootstrap Datepicker
+    $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+        todayHighlight: true
+    });
+
+    // Initialize DataTables
+    $('#example').DataTable();
+
+    // Initialize Toastr
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+    };
+
+    // Initialize SweetAlert2
+    $('.swal').on('click', function () {
+        Swal.fire('Hello world!');
+    });
+});
