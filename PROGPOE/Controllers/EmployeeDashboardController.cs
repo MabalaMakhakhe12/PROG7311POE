@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace PROGPOE.Controllers
 {
+    /// <summary>
+    /// Controller for handling operations related to the Employee Dashboard.
+    /// </summary>
+    [Authorize]
     public class EmployeeDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,8 +22,10 @@ namespace PROGPOE.Controllers
         {
             _context = context;
         }
-
-        //[Authorize(Roles = "Employee")]
+        /// <summary>
+        /// Returns the EmployeeDashboard view using the username of the 
+        /// employee who is currently logged in
+        /// </summary>
         public async Task<IActionResult> EmployeeDashboard()
         {
             var currentEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
@@ -34,12 +40,18 @@ namespace PROGPOE.Controllers
             return View(farmer);
         }
 
+        /// <summary>
+        /// Returns the AddFarmer view.
+        /// </summary>
         [HttpGet]
         public IActionResult AddFarmer()
         {
             return View();
         }
 
+        /// <summary>
+        /// Handles the POST request for AddFarmer and adds a new farmer to the database.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> AddFarmer(string username, string password, string confirmPassword, string role, string name, string surname, string email, string contact, string address, string postcode)
         {
@@ -84,6 +96,11 @@ namespace PROGPOE.Controllers
             return RedirectToAction("EmployeeDashboard");
 
         }
+
+        /// <summary>
+        /// Returns the FarmerProfiles view with a list of all farmers that
+        /// currently logged in employee added to the database
+        /// </summary>
         public async Task<IActionResult> FarmerProfiles()
         {
             var farmers = await _context.Farmers
@@ -93,7 +110,9 @@ namespace PROGPOE.Controllers
             return View(farmers);
         }
 
-
+        /// <summary>
+        /// Returns the FarmerDetails view with the details of a selected farmer.
+        /// </summary>
         public async Task<IActionResult> FarmerDetails(int id)
         {
             var farmer = await _context.Farmers
@@ -109,6 +128,10 @@ namespace PROGPOE.Controllers
 
             return View(farmer);
         }
+
+        /// <summary>
+        /// Returns the EditFarmer view with the details of a selected farmer for editing.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> EditFarmer(int id)
         {
@@ -133,6 +156,11 @@ namespace PROGPOE.Controllers
             TempData["ErrorMessage"] = "Farmer not found.";
             return RedirectToAction("FarmerProfiles");
         }
+
+        /// <summary>
+        /// Handles the POST request for EditFarmer and updates the details of 
+        /// the selected farmer after they have been edited.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> EditFarmer(EditFarmerViewModel model)
         {
@@ -155,6 +183,10 @@ namespace PROGPOE.Controllers
             }
             return RedirectToAction("FarmerProfiles");
         }
+
+        /// <summary>
+        /// Handles the POST request for DeleteFarmer and deletes a selected farmer from the database.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> DeleteFarmer(EditFarmerViewModel model)
         {
@@ -171,11 +203,18 @@ namespace PROGPOE.Controllers
             return RedirectToAction("FarmerProfiles");
         }
 
+        /// <summary>
+        /// Returns the FilterProductsByDate view.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> FilterProductsByDate()
         {
             return View();
         }
+
+        /// <summary>
+        /// Handles the POST request for FilterProductsByDate and returns a list of products filtered by production date.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> FilterProductsByDate(DateTime? startDate, DateTime? endDate)
         {
