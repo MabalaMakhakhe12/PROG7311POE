@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
 namespace AgriEnergyConnect.Controllers
-{
+{/// <summary>
+/// 
+/// </summary>
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,12 +19,16 @@ namespace AgriEnergyConnect.Controllers
         {
             _context = context;
         }
-
+        /// <summary>
+        /// Returns the Login view.
+        /// </summary>
         public IActionResult Login()
         {
             return View();
         }
-
+        /// <summary>
+        /// Handles the POST request for Login and authenticates the user.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -56,6 +62,9 @@ namespace AgriEnergyConnect.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Signs in the user with the given username taken in as a parameter
+        /// </summary>
         private async Task SignInUser(string username)
         {
             var claims = new List<Claim>
@@ -75,10 +84,17 @@ namespace AgriEnergyConnect.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
         }
+
+        /// <summary>
+        /// Returns the Register view.
+        /// </summary>
         public IActionResult Register()
         {
             return View();
         }
+        /// <summary>
+        /// Handles the POST request for Register and registers a new user.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Register(string username, string password, string confirmPassword, string role, string name, string surname, string email, string contact, string address, string postcode)
         {

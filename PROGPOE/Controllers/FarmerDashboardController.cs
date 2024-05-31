@@ -5,8 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PROGPOE.Data;
 using PROGPOE.Models;
+using Microsoft.AspNetCore.Authorization;
 namespace PROGPOE.Controllers
 {
+    /// <summary>
+    /// Controller for handling operations related to the Farmer Dashboard.
+    /// </summary>
+    [Authorize]
     public class FarmerDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,7 +21,10 @@ namespace PROGPOE.Controllers
             _context = context;
         }
 
-
+        /// <summary>
+        /// Returns the FarmerDashboard view with the product of
+        /// the farmer who is currently logged in.
+        /// </summary>
         public async Task<IActionResult> FarmerDashboard()
         {
             var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserName == User.Identity.Name);
@@ -36,12 +44,17 @@ namespace PROGPOE.Controllers
           //  ViewBag.Categories = await _context.Categories.ToListAsync();
             return View(products);
         }
+        /// <summary>
+        /// Returns the AddProduct view.
+        /// </summary>
         [HttpGet]
         public IActionResult AddProduct()
         {
            return View();
         }
-
+        /// <summary>
+        /// Handles the POST request for AddProductand adds a new product to the database.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> AddProduct(string name, string description, string categoryName, float price, int quantity, DateTime productionDate)
         {
@@ -77,6 +90,9 @@ namespace PROGPOE.Controllers
 
             return RedirectToAction("FarmerDashboard");
         }
+        /// <summary>
+        /// Returns the EditProduct view with the details of a specific product for editing.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> EditProduct(int id)
         {
@@ -105,7 +121,10 @@ namespace PROGPOE.Controllers
             return RedirectToAction("FarmerDashboard");
         }
 
-
+        /// <summary>
+        /// Handles the POST request for EditProduct and updates the details 
+        /// of a selected product.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> EditProduct(EditProductsViewModel model)
         {
@@ -127,22 +146,29 @@ namespace PROGPOE.Controllers
             return RedirectToAction("FarmerDashboard"); 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteProduct(int id)
+        /// <summary>
+        /// Handles the POST request for DeleteProduct and deletes a selected product from the database.
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(EditProductsViewModel model)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(model.ProductID);
 
             if (product != null)
             {
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
+                return RedirectToAction("ProductList");
+
             }
 
-            return RedirectToAction("FarmerDashboard");
+            return RedirectToAction("ProductList");
         }
 
-        
-
+        /// <summary>
+        /// Returns the ProductList view with a list of all products associated with the 
+        /// farmer who is currently logged in.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> ProductList()
         {

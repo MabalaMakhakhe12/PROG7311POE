@@ -22,6 +22,9 @@ namespace PROGPOE.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Redirects to the Login action in the Account controller.
+        /// </summary>
         public IActionResult LoginRegister()
         {
             return RedirectToAction("Login", "Account");
