@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PROGPOE.Models;
 
 namespace PROGPOE.Data
@@ -40,6 +41,10 @@ namespace PROGPOE.Data
                 .Property(u => u.UserName)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+v => v.ToDateTime(TimeOnly.MinValue),
+v => DateOnly.FromDateTime(v));
 
             // Configure CategoryID as foreign key for Product
             modelBuilder.Entity<Products>()

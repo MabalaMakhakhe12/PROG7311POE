@@ -133,7 +133,7 @@ namespace AgriEnergyConnect.Controllers
                     Name = name,
                     Surname = surname,
                     Email = email,
-                    mobile = contact,
+                    //mobile = contact,
                     Address = address,
                     Password = password,
                     ConfirmPassword = password
@@ -141,7 +141,22 @@ namespace AgriEnergyConnect.Controllers
                 _context.Employees.Add(employee);
             }
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while saving the employee. Please try again.";
+                // Log the exception details (you can use any logging framework)
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+                return RedirectToAction("Register");
+            }
+
             return RedirectToAction("Login");
         }
     }
